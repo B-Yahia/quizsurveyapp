@@ -13,12 +13,14 @@ import java.util.stream.Collectors;
 public class AuthorUserDetails implements UserDetails {
     private String username;
     private String password;
+    private final boolean availble;
     private List<GrantedAuthority> authorities;
 
 
     public AuthorUserDetails(Author author) {
         username= author.getUsername();
         password= author.getPassword();
+        availble= author.isAvailable();
         authorities= Arrays.stream(author.getRoles().split(",")).
                 map(SimpleGrantedAuthority::new).collect(Collectors.toList());
     }
@@ -55,6 +57,6 @@ public class AuthorUserDetails implements UserDetails {
 
     @Override
     public boolean isEnabled() {
-        return true;
+        return availble;
     }
 }
