@@ -1,5 +1,6 @@
 package com.example.quizsurveyapp.models;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.Pattern;
@@ -30,6 +31,7 @@ public class Author {
     @Column(name = "email", unique=true)
     @Email(message = "Invalid email")
     private String email;
+    @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDate dateOfBirth;
     private String roles;
     private boolean available;
