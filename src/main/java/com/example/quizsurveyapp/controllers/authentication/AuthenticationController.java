@@ -1,11 +1,15 @@
 package com.example.quizsurveyapp.controllers.authentication;
 
 import com.example.quizsurveyapp.models.Author;
-import com.example.quizsurveyapp.services.AuthenticationService;
 import com.example.quizsurveyapp.services.AuthorService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -14,7 +18,7 @@ public class AuthenticationController {
     @Autowired
     private AuthorService authorService;
     @Autowired
-    private AuthenticationService authenticationService;
+    private AuthenticationManager authenticationManager;
 
     @PostMapping("/register")
     public ResponseEntity<String> registerAuthor(@RequestBody Author author){
@@ -24,10 +28,13 @@ public class AuthenticationController {
 
     @PostMapping("/login")
     public ResponseEntity<String> authenticateAuthor(@RequestBody AuthenticationRequest authenticationRequest ){
-        System.out.println(authenticationRequest.toString());
-
-        authenticationService.authenticate(authenticationRequest);
-        return new ResponseEntity<String>("correct",HttpStatus.ACCEPTED);
+        Authentication authentication= authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(authenticationRequest.getUsername(),authenticationRequest.getPassword()));
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+        return new ResponseEntity<String>("Login",HttpStatus.OK);
+    }
+    @GetMapping("/test")
+    public ResponseEntity<String> test(){
+        return new ResponseEntity<String>("test",HttpStatus.OK);
     }
 
 }
