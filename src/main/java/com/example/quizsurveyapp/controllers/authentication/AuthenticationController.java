@@ -1,5 +1,6 @@
 package com.example.quizsurveyapp.controllers.authentication;
 
+import com.example.quizsurveyapp.exception.ResourceNotFoundException;
 import com.example.quizsurveyapp.models.Author;
 import com.example.quizsurveyapp.services.AuthorService;
 import jakarta.validation.Valid;
@@ -22,13 +23,13 @@ public class AuthenticationController {
     private AuthenticationManager authenticationManager;
 
     @PostMapping("/register")
-    public ResponseEntity<String> registerAuthor(@RequestBody Author author){
+    public ResponseEntity<String> registerAuthor( @Valid @RequestBody Author author){
         authorService.addAuthor(author);
         return new ResponseEntity<String>("added", HttpStatus.CREATED);
     }
 
     @PostMapping("/login")
-    public ResponseEntity<AuthenticationResponse> authenticateAuthor(@RequestBody AuthenticationRequest authenticationRequest ){
+    public ResponseEntity<AuthenticationResponse> authenticateAuthor(@Valid @RequestBody AuthenticationRequest authenticationRequest ){
         Authentication authentication= authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(authenticationRequest.getUsername(),authenticationRequest.getPassword()));
         SecurityContextHolder.getContext().setAuthentication(authentication);
         AuthenticationResponse authenticationResponse = authorService.getAuthenticationResponse(authenticationRequest.getUsername());
@@ -36,7 +37,8 @@ public class AuthenticationController {
     }
     @GetMapping("/test")
     public ResponseEntity<String> test(){
-        return new ResponseEntity<String>("test",HttpStatus.OK);
+
+        throw new ResourceNotFoundException("nod");
     }
 
 }
