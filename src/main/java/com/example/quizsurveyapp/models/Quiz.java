@@ -18,7 +18,7 @@ public class Quiz {
     private long id;
     @NotBlank(message = "Please add a quiz title")
     private String title;
-    @NotBlank(message = "Please add a quiz description")
+//    @NotBlank(message = "Please add a quiz description")
     private String description;
     private String  category;
     private List<String> tags;

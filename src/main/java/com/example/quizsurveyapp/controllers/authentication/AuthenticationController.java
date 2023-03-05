@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/auth")
+@CrossOrigin
 public class AuthenticationController {
     @Autowired
     private AuthorService authorService;
@@ -27,10 +28,11 @@ public class AuthenticationController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<String> authenticateAuthor(@RequestBody AuthenticationRequest authenticationRequest ){
+    public ResponseEntity<AuthenticationResponse> authenticateAuthor(@RequestBody AuthenticationRequest authenticationRequest ){
         Authentication authentication= authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(authenticationRequest.getUsername(),authenticationRequest.getPassword()));
         SecurityContextHolder.getContext().setAuthentication(authentication);
-        return new ResponseEntity<String>("Login",HttpStatus.OK);
+        AuthenticationResponse authenticationResponse = authorService.getAuthenticationResponse(authenticationRequest.getUsername());
+        return new ResponseEntity<>(authenticationResponse,HttpStatus.OK);
     }
     @GetMapping("/test")
     public ResponseEntity<String> test(){
