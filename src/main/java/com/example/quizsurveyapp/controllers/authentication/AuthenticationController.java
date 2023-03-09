@@ -22,13 +22,14 @@ public class AuthenticationController {
     @Autowired
     private AuthenticationManager authenticationManager;
 
-
+    @CrossOrigin(origins = "*" )
     @PostMapping("/register")
     public ResponseEntity<String> registerAuthor( @Valid @RequestBody Author author){
         authorService.addAuthor(author);
         return new ResponseEntity<String>("added", HttpStatus.CREATED);
     }
 
+    @CrossOrigin(origins = "*" )
     @PostMapping("/login")
     public ResponseEntity<AuthenticationResponse> authenticateAuthor(@Valid @RequestBody AuthenticationRequest authenticationRequest ){
         Authentication authentication= authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(authenticationRequest.getUsername(),authenticationRequest.getPassword()));
