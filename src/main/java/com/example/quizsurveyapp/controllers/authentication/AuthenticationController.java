@@ -15,11 +15,13 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/auth")
+@CrossOrigin(origins = "*" )
 public class AuthenticationController {
     @Autowired
     private AuthorService authorService;
     @Autowired
     private AuthenticationManager authenticationManager;
+
 
     @PostMapping("/register")
     public ResponseEntity<String> registerAuthor( @Valid @RequestBody Author author){
