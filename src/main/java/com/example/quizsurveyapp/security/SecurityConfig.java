@@ -30,12 +30,6 @@ public class SecurityConfig {
 //        return new AuthorUserDetailsService();
 //    }
 
-    @Autowired
-    private UserDetailsService userDetailsService;
-
-    public SecurityConfig(UserDetailsService userDetailsService){
-        this.userDetailsService = userDetailsService;
-    }
 
     @Bean
     public PasswordEncoder passwordEncoder(){

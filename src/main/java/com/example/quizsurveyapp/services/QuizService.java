@@ -17,7 +17,7 @@ import java.util.List;
 @Service
 public class QuizService {
     @Autowired
-    private AuthorRepository authorRepository;
+    private AuthorService authorService;
     @Autowired
     private QuizRepository quizRepository;
     @Autowired
@@ -27,49 +27,43 @@ public class QuizService {
 
 
     public Quiz createQuizAndAddAuthor(Quiz quiz , long authorId){
-        Author author = authorRepository.findById(authorId).orElseThrow(()-> new ResourceNotFoundException("Author no found"));
-        List<Question> questions = new ArrayList<>();
-        for (Question q : quiz.getQuestions()) {
-            Question newQuestion = questionService.createQuestion(q);
-            questions.add(newQuestion);
-        }
-        Quiz newQuiz = new Quiz();
-        newQuiz.setAuthor(author);
-        newQuiz.setAvailable(quiz.isAvailable());
-        newQuiz.setQuestions(questions);
-        newQuiz.setDescription(quiz.getDescription());
-        newQuiz.setCategory(quiz.getCategory());
-        newQuiz.setTitle(quiz.getTitle());
-        newQuiz.setPublic(quiz.isPublic());
-        newQuiz.setTags(quiz.getTags());
+        var author = authorService.getAuthorById(authorId);
+        var newQuiz=saveQuiz(quiz);
+        author.addQuiz(newQuiz);
+        authorService.saveAuthor(author);
         return newQuiz;
     }
+
+    public Quiz getQuizById( long quizId){
+        var quiz= quizRepository.findById(quizId).orElseThrow(()-> new ResourceNotFoundException("Quiz no found"));
+        if (quiz.isAvailable()){
+            return quiz;
+        }else {
+            throw new ResourceNotFoundException("Quiz has been removed");
+        }
+    }
+
     public Quiz saveQuiz (Quiz quiz) {
         return quizRepository.save(quiz);
     }
-    public void editPublicStatus( long quizId){
-        Quiz quiz = quizRepository.findById(quizId).orElseThrow(()-> new ResourceNotFoundException("Quiz no found"));
-        quiz.setPublic(!quiz.isPublic());
-        saveQuiz(quiz);
+    public Quiz editPublicStatus( long quizId){
+        var quiz = getQuizById(quizId);
+        quiz.setPublicAccess(!quiz.isPublicAccess());
+        return saveQuiz(quiz);
     }
-    public void editAvailableStatus( long quizId){
-        Quiz quiz = quizRepository.findById(quizId).orElseThrow(()-> new ResourceNotFoundException("Quiz no found"));
+    public Quiz editAvailableStatus( long quizId){
+        Quiz quiz = getQuizById(quizId);
         quiz.setAvailable(!quiz.isAvailable());
-        saveQuiz(quiz);
+        return saveQuiz(quiz);
     }
 
     public List<Quiz> getAllQuizzes ( ){
-        return quizRepository.findAll();
+        var quizList= quizRepository.findAll();
+        quizList.removeIf(quiz -> quiz.isAvailable()==false);
+        return quizList;
     }
-    public List<Quiz> getUserQuizzes ( long userID){
-        List<Quiz> userQuizzes = getAllQuizzes();
-        userQuizzes.removeIf(quiz -> quiz.getAuthor().getId()!=userID);
-        userQuizzes.removeIf(quiz -> quiz.isAvailable()== false);
-        return userQuizzes;
-    }
-    public Quiz getQuizById( long quizId){
-        return quizRepository.findById(quizId).orElseThrow(()-> new ResourceNotFoundException("Quiz no found"));
-    }
+
+
 
     public List<Quiz> getAllQuizzesSorted ( String propriety){
         return quizRepository.findAll(Sort.by(propriety));
@@ -80,10 +74,10 @@ public class QuizService {
 //        userQuizzes.removeIf(quiz -> quiz.isPublic()==false);
 //        Pageable pageable = PageRequest.of(offSet, pageSize);
 //        Page<Quiz> page = new PageImpl<>(userQuizzes, pageable, userQuizzes.size());
+//
+//       Page<Quiz> quizPage = quizRepository.findPublicQuizzes(PageRequest.of(offSet, pageSize));
 
-       Page<Quiz> quizPage = quizRepository.findPublicQuizzes(PageRequest.of(offSet, pageSize));
 
-
-        return quizPage;
+        return null;
     }
 }

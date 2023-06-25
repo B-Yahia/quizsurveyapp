@@ -15,8 +15,6 @@ public class Question {
     private Long id;
     @NotBlank(message = "Please write a question")
     private String statement;
-    @OneToOne(cascade = CascadeType.MERGE)
-    private Answer correctAnswer;
     @OneToMany(cascade = CascadeType.ALL)
     private List<Answer> answers;
     @Column(columnDefinition="tinyint(1) default 1")

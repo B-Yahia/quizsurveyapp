@@ -16,6 +16,8 @@ public class Answer {
     @NotBlank(message = "Please write an answer")
     private String statement;
 
+    private boolean correct;
+
     @Column(columnDefinition="tinyint(1) default 1")
     private boolean available;
 }
