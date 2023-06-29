@@ -20,5 +20,5 @@ public class QuestionResponse {
     private Question question;
 
     @ElementCollection
-    private List<String> selectedAnswers;
+    private List<Long> selectedAnswerIds;
 }

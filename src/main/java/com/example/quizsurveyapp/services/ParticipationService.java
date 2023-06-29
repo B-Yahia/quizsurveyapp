@@ -1,7 +1,9 @@
 package com.example.quizsurveyapp.services;
 
 import com.example.quizsurveyapp.exception.ResourceNotFoundException;
+import com.example.quizsurveyapp.models.Answer;
 import com.example.quizsurveyapp.models.Participation;
+import com.example.quizsurveyapp.models.QuestionResponse;
 import com.example.quizsurveyapp.models.Quiz;
 import com.example.quizsurveyapp.repositories.ParticipationRepository;
 import com.example.quizsurveyapp.repositories.QuizRepository;
@@ -9,25 +11,49 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class ParticipationService {
     @Autowired
-    private QuizRepository quizRepository;
+    private QuizService quizService;
     @Autowired
     private ParticipationRepository participantRepository;
 
 
-    public Quiz addParticipationToQuiz (Participation participant, long id){
-        Quiz quiz= quizRepository.findById(id).orElseThrow(()-> new ResourceNotFoundException("Quiz not found"));
-        Participation participant1 = saveParticipant(participant);
-        List<Participation> participantList =quiz.getParticipationList();
-        participantList.add(participant1);
+    public Participation addParticipationToQuiz (Participation participant){
+        var quiz= quizService.getQuizById(participant.getQuizId());
+        participant.setScore(calculateScore(participant.getQuestionResponseList()));
+        saveParticipant(participant);
+        var participantList =quiz.getParticipationList();
+        participantList.add(participant);
         quiz.setParticipationList(participantList);
-        return quizRepository.save(quiz);
+        return participant;
     }
 
     Participation saveParticipant (Participation participant){
         return participantRepository.save(participant);
+    }
+
+    public float calculateScore (List<QuestionResponse> questionResponseList){
+        float score = 0 ;
+
+        for (QuestionResponse qr:questionResponseList) {
+            boolean correctAnswer =true;
+            List<Answer> correctAnswers = qr.getQuestion().getAnswers().stream().filter(answer -> answer.isCorrect()).collect(Collectors.toList());
+            if (qr.getSelectedAnswerIds().size()== correctAnswers.size()){
+                for (Long selectedAnswerId: qr.getSelectedAnswerIds()) {
+                    if (correctAnswers.stream().noneMatch(answer -> answer.getId()==selectedAnswerId)){
+                        correctAnswer = false;
+                    }
+                }
+            }else {
+                correctAnswer = false;
+            }
+            if (correctAnswer){
+                score=score+1;
+            }
+        }
+        return score;
     }
 }

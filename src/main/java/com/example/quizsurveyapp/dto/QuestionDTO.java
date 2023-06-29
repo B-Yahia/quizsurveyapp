@@ -12,4 +12,5 @@ public class QuestionDTO {
     @NotBlank(message = "Please write a question")
     private String statement;
     private List<AnswerDTO> answers;
+    private int numberOfCorrectAnswers ;
 }

@@ -21,11 +21,7 @@ public class Participation {
     private String lastName;
     @NotNull
     private float score;
-
-    @ManyToOne
-    @JoinColumn(name = "quiz_id")
-    private Quiz quiz;
-
+    private Long quizId;
     @OneToMany(cascade = CascadeType.ALL)
     private List<QuestionResponse> questionResponseList;
 

@@ -69,15 +69,9 @@ public class QuizService {
         return quizRepository.findAll(Sort.by(propriety));
     }
 
-    public Page<Quiz> getAllQuizzesWithPagination (int offSet ,int pageSize ){
-//        List<Quiz> userQuizzes = getAllQuizzes();
-//        userQuizzes.removeIf(quiz -> quiz.isPublic()==false);
-//        Pageable pageable = PageRequest.of(offSet, pageSize);
-//        Page<Quiz> page = new PageImpl<>(userQuizzes, pageable, userQuizzes.size());
-//
-//       Page<Quiz> quizPage = quizRepository.findPublicQuizzes(PageRequest.of(offSet, pageSize));
 
 
-        return null;
+    public Page<Quiz> getAvailableQuizzes(Pageable pageable) {
+        return quizRepository.findByAvailableTrue(pageable);
     }
 }

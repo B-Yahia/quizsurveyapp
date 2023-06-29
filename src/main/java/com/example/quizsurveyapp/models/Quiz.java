@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -24,11 +25,18 @@ public class Quiz {
     @ElementCollection
     private List<String> tags;
     @OneToMany(cascade = CascadeType.ALL)
-    private List<Question> questions;
+    private List<Question> questions = new ArrayList<>();;
     @OneToMany (cascade = CascadeType.ALL)
-    private List<Participation> participationList;
+    private List<Participation> participationList = new ArrayList<>();;
     @Column(columnDefinition="tinyint(1) default 1")
     private boolean available;
     @Column(columnDefinition="tinyint(1) default 1")
     private boolean publicAccess;
+
+    public void addParticipation (Participation participation) {
+        this.participationList.add(participation);
+    }
+    public void addQuestion(Question question) {
+        this.questions.add(question);
+    }
 }

@@ -21,6 +21,6 @@ public class QuizDTO {
     private String category;
     private List<String> tags;
     private List<QuestionDTO> questions;
-    private List<Participation> participationList;
+    private List<ParticipationDTO> participationList;
     private boolean publicAccess;
 }

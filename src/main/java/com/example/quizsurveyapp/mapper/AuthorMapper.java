@@ -2,6 +2,7 @@ package com.example.quizsurveyapp.mapper;
 
 
 import com.example.quizsurveyapp.dto.AuthorDTO;
+import com.example.quizsurveyapp.dto.ParticipationDTO;
 import com.example.quizsurveyapp.dto.QuizDTO;
 import com.example.quizsurveyapp.models.Author;
 import com.example.quizsurveyapp.models.Quiz;
@@ -15,6 +16,7 @@ import java.util.stream.Collectors;
 public class AuthorMapper {
     @Autowired
     private QuizMapper quizMapper;
+
 
     public AuthorDTO toDTO(Author author) {
         AuthorDTO authorDTO = new AuthorDTO();

@@ -1,12 +1,16 @@
 package com.example.quizsurveyapp.controllers;
 
 import com.example.quizsurveyapp.dto.QuizDTO;
+import com.example.quizsurveyapp.dto.QuizDTOPage;
 import com.example.quizsurveyapp.mapper.QuizMapper;
 import com.example.quizsurveyapp.models.Quiz;
 import com.example.quizsurveyapp.services.QuizService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -24,7 +28,7 @@ public class QuizController {
 
 
     @PostMapping("/{id}")
-    public ResponseEntity<QuizDTO> addQuiz (@PathVariable Long id,@Valid @RequestBody QuizDTO quizDTO){
+    public ResponseEntity<QuizDTO> addQuizToAuthor (@PathVariable Long id,@Valid @RequestBody QuizDTO quizDTO){
         var quiz = quizService.createQuizAndAddAuthor(quizMapper.toEntity(quizDTO),id);
         return new ResponseEntity<>(quizMapper.toDTO(quiz),HttpStatus.CREATED);
     }
@@ -53,6 +57,15 @@ public class QuizController {
         var quizList = quizService.getAllQuizzes();
         var quizDTOList = quizList.stream().map(quizMapper::toDTO).collect(Collectors.toList());
         return  new ResponseEntity<>(quizDTOList,HttpStatus.OK);
+    }
+
+    @GetMapping("/{page}/{size}")
+    public ResponseEntity<QuizDTOPage> getAllQuizzes(@PathVariable int page, @PathVariable int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        var quizPage = quizService.getAvailableQuizzes(pageable);
+        var quizDTOList = quizPage.getContent().stream().map(quizMapper::toDTO).collect(Collectors.toList());
+        var quizDTOPage =new QuizDTOPage(quizDTOList,quizPage.getPageable().getPageNumber(),quizPage.getTotalPages(),quizPage.isLast(),quizPage.isFirst());
+        return new ResponseEntity<>(quizDTOPage, HttpStatus.OK);
     }
 
 

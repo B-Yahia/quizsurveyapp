@@ -25,6 +25,7 @@ public class QuestionMapper {
                 .map(answerMapper::toDTO)
                 .collect(Collectors.toList());
         questionDTO.setAnswers(answers);
+        questionDTO.setNumberOfCorrectAnswers(question.getAnswers().stream().filter(answer -> answer.isCorrect()).collect(Collectors.toList()).size());
         return questionDTO;
     }
 

@@ -1,5 +1,7 @@
 package com.example.quizsurveyapp.controllers;
 
+import com.example.quizsurveyapp.dto.ParticipationDTO;
+import com.example.quizsurveyapp.mapper.ParticipationMapper;
 import com.example.quizsurveyapp.models.Participation;
 import com.example.quizsurveyapp.models.Quiz;
 import com.example.quizsurveyapp.services.ParticipationService;
@@ -14,11 +16,13 @@ import org.springframework.web.bind.annotation.*;
 public class ParticipantController {
     @Autowired
     private ParticipationService participationService;
+    @Autowired
+    private ParticipationMapper participationMapper;
 
-    @PostMapping("/add/{id}")
-    public ResponseEntity<Quiz> saveParticipant(@PathVariable long id , @RequestBody Participation participant){
-        Quiz quiz = participationService.addParticipationToQuiz(participant,id);
-        return new ResponseEntity<>(quiz, HttpStatus.OK);
+    @PostMapping
+    public ResponseEntity<ParticipationDTO> saveParticipant(@RequestBody ParticipationDTO participationDTO){
+        var participation = participationService.addParticipationToQuiz(participationMapper.toEntity(participationDTO));
+        return new ResponseEntity<>(participationMapper.toDTO(participation), HttpStatus.OK);
     }
 
 

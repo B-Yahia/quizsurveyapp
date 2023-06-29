@@ -14,4 +14,5 @@ public interface QuizRepository extends JpaRepository<Quiz,Long> {
 //    Page<Quiz> findPublicQuizzes(Pageable pageable);
 
     List<Quiz> findByAvailableTrue();
+    Page<Quiz> findByAvailableTrue(Pageable pageable);
 }
