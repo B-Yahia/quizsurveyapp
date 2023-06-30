@@ -25,9 +25,9 @@ public class Quiz {
     @ElementCollection
     private List<String> tags;
     @OneToMany(cascade = CascadeType.ALL)
-    private List<Question> questions = new ArrayList<>();;
+    private List<Question> questions = new ArrayList<>();
     @OneToMany (cascade = CascadeType.ALL)
-    private List<Participation> participationList = new ArrayList<>();;
+    private List<Participation> participationList = new ArrayList<>();
     @Column(columnDefinition="tinyint(1) default 1")
     private boolean available;
     @Column(columnDefinition="tinyint(1) default 1")

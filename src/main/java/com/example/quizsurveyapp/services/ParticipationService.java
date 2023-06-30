@@ -19,15 +19,15 @@ public class ParticipationService {
     private QuizService quizService;
     @Autowired
     private ParticipationRepository participantRepository;
-
+    @Autowired
+    private AnswerService answerService;
 
     public Participation addParticipationToQuiz (Participation participant){
         var quiz= quizService.getQuizById(participant.getQuizId());
         participant.setScore(calculateScore(participant.getQuestionResponseList()));
         saveParticipant(participant);
-        var participantList =quiz.getParticipationList();
-        participantList.add(participant);
-        quiz.setParticipationList(participantList);
+        quiz.addParticipation(participant);
+        quizService.saveQuiz(quiz);
         return participant;
     }
 
@@ -43,7 +43,8 @@ public class ParticipationService {
             List<Answer> correctAnswers = qr.getQuestion().getAnswers().stream().filter(answer -> answer.isCorrect()).collect(Collectors.toList());
             if (qr.getSelectedAnswerIds().size()== correctAnswers.size()){
                 for (Long selectedAnswerId: qr.getSelectedAnswerIds()) {
-                    if (correctAnswers.stream().noneMatch(answer -> answer.getId()==selectedAnswerId)){
+                    var selectedAnswerEntity = answerService.findAnswerByID(selectedAnswerId);
+                    if (!selectedAnswerEntity.isCorrect()){
                         correctAnswer = false;
                     }
                 }

@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -16,5 +17,5 @@ public class ParticipationDTO {
     private String lastName;
     private float score;
     private Long quizId;
-    private List<QuestionResponseDTO> questionResponseList;
+    private List<QuestionResponseDTO> questionResponseList= new ArrayList<>();;
 }

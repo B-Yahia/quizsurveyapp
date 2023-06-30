@@ -7,6 +7,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Data
@@ -20,7 +21,7 @@ public class QuizDTO {
     private String description;
     private String category;
     private List<String> tags;
-    private List<QuestionDTO> questions;
-    private List<ParticipationDTO> participationList;
+    private List<QuestionDTO> questions = new ArrayList<>();
+    private List<ParticipationDTO> participationList = new ArrayList<>();
     private boolean publicAccess;
 }
