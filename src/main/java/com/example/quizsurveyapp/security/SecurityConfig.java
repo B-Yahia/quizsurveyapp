@@ -20,15 +20,6 @@ import org.springframework.security.web.SecurityFilterChain;
 @Configuration
 @EnableMethodSecurity
 public class SecurityConfig {
-//    @Bean
-//    public UserDetailsService userDetailsService(){
-////        UserDetails admin = User.withUsername("admin")
-////                .password(encoder.encode("123")).roles("ADMIN").build();
-////        UserDetails user = User.withUsername("user")
-////                .password(encoder.encode("123")).roles("USER").build();
-////        return new InMemoryUserDetailsManager(admin,user);
-//        return new AuthorUserDetailsService();
-//    }
 
 
     @Bean
@@ -39,7 +30,7 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return  http.csrf().disable()
-                .cors().disable()
+
                 .authorizeHttpRequests().requestMatchers("/**","/auth/**","/quiz/**").permitAll()
                 .anyRequest().authenticated()
                 .and().build();
