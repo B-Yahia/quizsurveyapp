@@ -2,6 +2,7 @@ package com.example.quizsurveyapp.services;
 
 import com.example.quizsurveyapp.controllers.authentication.AuthenticationRequest;
 import com.example.quizsurveyapp.controllers.authentication.AuthenticationResponse;
+import com.example.quizsurveyapp.exception.DataIntegrityException;
 import com.example.quizsurveyapp.exception.ResourceNotFoundException;
 import com.example.quizsurveyapp.models.Author;
 import com.example.quizsurveyapp.repositories.AuthorRepository;
@@ -16,6 +17,15 @@ public class AuthorService {
     private AuthorRepository authorRepository;
 
 
+    public Author saveNewAuthor (Author author){
+        if (authorRepository.existsByEmail(author.getEmail())){
+            throw new DataIntegrityException("Email Address already used, please try a new one");
+        }else if (authorRepository.existsByUsername(author.getUsername())){
+            throw new DataIntegrityException("Username already used, please try a new one");
+        }else {
+            return saveAuthor(author);
+        }
+    }
     public Author saveAuthor (Author author){
         return authorRepository.save(author);
     }

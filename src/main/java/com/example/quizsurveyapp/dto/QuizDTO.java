@@ -1,7 +1,4 @@
 package com.example.quizsurveyapp.dto;
-
-import com.example.quizsurveyapp.models.Participation;
-import com.example.quizsurveyapp.models.Question;
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Data;

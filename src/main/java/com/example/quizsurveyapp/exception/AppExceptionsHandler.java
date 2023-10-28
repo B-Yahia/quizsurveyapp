@@ -27,4 +27,12 @@ public class AppExceptionsHandler {
         errorMsg.put("Messages", exception.getMessage());
         return  errorMsg;
     }
+
+    @ResponseStatus(HttpStatus.CONFLICT)
+    @ExceptionHandler(DataIntegrityException.class)
+    public Map<String,String> handleDataIntegrityEx (DataIntegrityException exception){
+        Map<String, String> errorMsg = new HashMap<>();
+        errorMsg.put("Messages", exception.getMessage());
+        return  errorMsg;
+    }
 }

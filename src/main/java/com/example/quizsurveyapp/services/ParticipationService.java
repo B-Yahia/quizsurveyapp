@@ -1,12 +1,9 @@
 package com.example.quizsurveyapp.services;
 
-import com.example.quizsurveyapp.exception.ResourceNotFoundException;
 import com.example.quizsurveyapp.models.Answer;
 import com.example.quizsurveyapp.models.Participation;
 import com.example.quizsurveyapp.models.QuestionResponse;
-import com.example.quizsurveyapp.models.Quiz;
 import com.example.quizsurveyapp.repositories.ParticipationRepository;
-import com.example.quizsurveyapp.repositories.QuizRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -39,19 +36,19 @@ public class ParticipationService {
         float score = 0 ;
 
         for (QuestionResponse qr:questionResponseList) {
-            boolean correctAnswer =true;
+            qr.setCorrect(true);
             List<Answer> correctAnswers = qr.getQuestion().getAnswers().stream().filter(answer -> answer.isCorrect()).collect(Collectors.toList());
             if (qr.getSelectedAnswerIds().size()== correctAnswers.size()){
                 for (Long selectedAnswerId: qr.getSelectedAnswerIds()) {
                     var selectedAnswerEntity = answerService.findAnswerByID(selectedAnswerId);
                     if (!selectedAnswerEntity.isCorrect()){
-                        correctAnswer = false;
+                        qr.setCorrect(false);
                     }
                 }
             }else {
-                correctAnswer = false;
+                qr.setCorrect(false);
             }
-            if (correctAnswer){
+            if (qr.isCorrect()){
                 score=score+1;
             }
         }

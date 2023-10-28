@@ -21,7 +21,7 @@ public class AuthenticationController {
 
     @PostMapping("/register")
     public HttpStatus registerAuthor( @Valid @RequestBody RegisterRequest registerRequest){
-        authorService.saveAuthor(registerRequestToAuthorMapper.toAuthor(registerRequest));
+        authorService.saveNewAuthor(registerRequestToAuthorMapper.toAuthor(registerRequest));
         return HttpStatus.CREATED;
     }
 

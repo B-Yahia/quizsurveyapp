@@ -13,4 +13,5 @@ public class QuestionResponseDTO {
     private Long id;
     private QuestionDTO questionDTO;
     private List<Long> selectedAnswerIds;
+    private boolean correct;
 }

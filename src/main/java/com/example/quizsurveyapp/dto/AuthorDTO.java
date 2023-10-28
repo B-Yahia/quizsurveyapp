@@ -1,8 +1,6 @@
 package com.example.quizsurveyapp.dto;
 
-import com.example.quizsurveyapp.models.Quiz;
 import com.fasterxml.jackson.annotation.JsonFormat;
-import jakarta.persistence.Column;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.Pattern;
 import lombok.AllArgsConstructor;

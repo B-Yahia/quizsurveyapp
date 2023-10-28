@@ -15,6 +15,7 @@ public class QuestionResponseMapper {
         questionResponseDTO.setId(questionResponse.getId());
         questionResponseDTO.setQuestionDTO(questionMapper.toDTO(questionResponse.getQuestion()));
         questionResponseDTO.setSelectedAnswerIds(questionResponse.getSelectedAnswerIds());
+        questionResponseDTO.setCorrect(questionResponse.isCorrect());
         return questionResponseDTO;
     }
 
@@ -23,6 +24,7 @@ public class QuestionResponseMapper {
         questionResponse.setId(questionResponseDTO.getId());
         questionResponse.setQuestion(questionMapper.toEntity(questionResponseDTO.getQuestionDTO()));
         questionResponse.setSelectedAnswerIds(questionResponseDTO.getSelectedAnswerIds());
+        questionResponse.setCorrect(questionResponseDTO.isCorrect());
         return questionResponse;
     }
 }

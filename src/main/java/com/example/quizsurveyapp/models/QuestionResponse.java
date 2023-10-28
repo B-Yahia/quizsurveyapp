@@ -21,4 +21,6 @@ public class QuestionResponse {
 
     @ElementCollection
     private List<Long> selectedAnswerIds;
+
+    private boolean correct;
 }

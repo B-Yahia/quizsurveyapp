@@ -20,6 +20,7 @@ public class Quiz {
     @NotBlank(message = "Please add the quiz title")
     private String title;
     @NotBlank(message = "Please add the quiz description")
+    @Column(columnDefinition = "TEXT")
     private String description;
     private String  category;
     @ElementCollection
