@@ -13,6 +13,6 @@ public interface QuizRepository extends JpaRepository<Quiz,Long> {
 //    @Query("SELECT q FROM Quiz q WHERE q.Public = true")
 //    Page<Quiz> findPublicQuizzes(Pageable pageable);
 
-    List<Quiz> findByAvailableTrue();
+    List<Quiz> findByAvailableTrueAndPublicAccessTrue();
     Page<Quiz> findByAvailableTrue(Pageable pageable);
 }

@@ -58,8 +58,7 @@ public class QuizService {
     }
 
     public List<Quiz> getAllQuizzes ( ){
-        var quizList= quizRepository.findAll();
-        quizList.removeIf(quiz -> quiz.isAvailable()==false);
+        var quizList = quizRepository.findByAvailableTrueAndPublicAccessTrue();
         return quizList;
     }
 
